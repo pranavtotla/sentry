@@ -60,3 +60,12 @@ def pytest_collection_modifyitems(config, items):
         marker = "group_%s" % group_num
         config.addinivalue_line("markers", marker)
         item.add_marker(getattr(pytest.mark, marker))
+
+        if os.environ.get("RUN_SNUBA_TESTS_ONLY"):
+            from sentry.testutils import SnubaTestCase
+
+            skip = pytest.mark.skip(reason="Skipping non-SnubaTestCase...")
+            import inspect
+
+            if inspect.isclass(item.cls) and not issubclass(item.cls, SnubaTestCase):
+                item.add_marker(skip)
