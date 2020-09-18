@@ -51,7 +51,22 @@ def install_sentry_plugins():
 
 
 def pytest_collection_modifyitems(config, items):
-    for item in items:
+    keep, discard = [], []
+    if os.environ.get("RUN_SNUBA_TESTS_ONLY"):
+        # Need to deselect test cases not of class SnubaTestCase
+        from sentry.testutils import SnubaTestCase
+        import inspect
+
+        for item in items:
+            if inspect.isclass(item.cls) and not issubclass(item.cls, SnubaTestCase):
+                discard.append(item)
+            else:
+                keep.append(item)
+    else:
+        keep = items
+
+    # Split tests in different groups if necessary
+    for item in keep:
         total_groups = int(os.environ.get("TOTAL_TEST_GROUPS", 1))
         # TODO(joshuarli): six 1.12.0 adds ensure_binary: six.ensure_binary(item.location[0])
         group_num = (
@@ -61,11 +76,7 @@ def pytest_collection_modifyitems(config, items):
         config.addinivalue_line("markers", marker)
         item.add_marker(getattr(pytest.mark, marker))
 
-        if os.environ.get("RUN_SNUBA_TESTS_ONLY"):
-            from sentry.testutils import SnubaTestCase
-
-            skip = pytest.mark.skip(reason="Skipping non-SnubaTestCase...")
-            import inspect
-
-            if inspect.isclass(item.cls) and not issubclass(item.cls, SnubaTestCase):
-                item.add_marker(skip)
+    # This only needs to be done there are items to be discarded
+    if len(discard) > 0:
+        items[:] = keep
+        config.hook.pytest_deselected(items=discard)
