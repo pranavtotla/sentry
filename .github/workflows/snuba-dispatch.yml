@@ -1,4 +1,4 @@
-name: acceptance
+name: all-snuba
 on:
   push:
     branches:
