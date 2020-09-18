@@ -180,6 +180,15 @@ else
 endif
 	@echo ""
 
+test-all-snuba:
+	@echo "--> Running Python tests"
+	# This gets called by getsentry
+ifndef TEST_GROUP
+	RUN_SNUBA_TESTS_ONLY=1 py.test tests/integration tests/sentry tests/acceptance
+else
+	RUN_SNUBA_TESTS_ONLY=1 py.test -m group_$(TEST_GROUP) tests/integration tests/sentry tests/acceptance
+endif
+
 test-snuba:
 	@echo "--> Running snuba tests"
 	py.test tests/snuba tests/sentry/eventstream/kafka tests/sentry/snuba/test_discover.py -vv --cov . --cov-report="xml:.artifacts/snuba.coverage.xml" --junit-xml=".artifacts/snuba.junit.xml"
