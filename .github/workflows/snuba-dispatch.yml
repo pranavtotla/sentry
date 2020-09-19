@@ -46,7 +46,7 @@ jobs:
 
         # services configuration
         SENTRY_KAFKA_HOSTS: sentry_kafka:9092
-        SENTRY_ZOOKEEPER_HOSTS: sentry_zookeeper:2182
+        SENTRY_ZOOKEEPER_HOSTS: sentry_zookeeper:2181
         SENTRY_REDIS_HOST: redis
         # The hostname used to communicate with the PostgreSQL from sentry
         DATABASE_URL: postgresql://postgres:postgres@localhost/sentry
