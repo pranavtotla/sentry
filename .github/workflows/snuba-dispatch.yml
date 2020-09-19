@@ -156,5 +156,7 @@ jobs:
             [ "$GITHUB_REF" = "refs/heads/master" ] && export PYTEST_SENTRY_ALWAYS_REPORT=1
             make test-all-snuba
           env:
+            SENTRY_KAFKA_HOSTS: 127.0.0.1:9092
+            SENTRY_ZOOKEEPER_HOSTS: 127.0.0.1:2181
             USE_SNUBA: 1
             TEST_GROUP: ${{ matrix.instance }}

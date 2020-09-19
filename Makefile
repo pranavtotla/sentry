@@ -181,13 +181,13 @@ endif
 	@echo ""
 
 test-all-snuba:
-	@echo "--> Running Python tests"
-	# This gets called by getsentry
+	@echo "--> Running all tests that use snuba"
 ifndef TEST_GROUP
 	RUN_SNUBA_TESTS_ONLY=1 py.test tests/integration tests/sentry tests/acceptance
 else
 	RUN_SNUBA_TESTS_ONLY=1 py.test -m group_$(TEST_GROUP) tests/integration tests/sentry tests/acceptance
 endif
+	@echo ""
 
 test-snuba:
 	@echo "--> Running snuba tests"
