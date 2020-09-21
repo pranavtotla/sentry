@@ -66,7 +66,7 @@ def pytest_collection_modifyitems(config, items):
         keep = items
 
     # Split tests in different groups if necessary
-    for item in keep:
+    for index, item in enumerate(items):
         total_groups = int(os.environ.get("TOTAL_TEST_GROUPS", 1))
         grouping_strategy = os.environ.get("TEST_GROUP_STRATEGY", "file")
         # TODO(joshuarli): six 1.12.0 adds ensure_binary: six.ensure_binary(item.location[0])
