@@ -68,10 +68,14 @@ def pytest_collection_modifyitems(config, items):
     # Split tests in different groups if necessary
     for item in keep:
         total_groups = int(os.environ.get("TOTAL_TEST_GROUPS", 1))
+        grouping_strategy = os.environ.get("TEST_GROUP_STRATEGY", "file")
         # TODO(joshuarli): six 1.12.0 adds ensure_binary: six.ensure_binary(item.location[0])
-        group_num = (
-            int(md5(six.text_type(item.location[0]).encode("utf-8")).hexdigest(), 16) % total_groups
+        item_to_group = (
+            int(md5(six.text_type(item.location[0]).encode("utf-8")).hexdigest(), 16)
+            if grouping_strategy == "file"
+            else index
         )
+        group_num = item_to_group % total_groups
         marker = "group_%s" % group_num
         config.addinivalue_line("markers", marker)
         item.add_marker(getattr(pytest.mark, marker))

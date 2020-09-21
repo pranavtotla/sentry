@@ -160,3 +160,4 @@ jobs:
             # SENTRY_ZOOKEEPER_HOSTS: 127.0.0.1:2181
             USE_SNUBA: 1
             TEST_GROUP: ${{ matrix.instance }}
+            TEST_GROUP_STRATEGY: file
