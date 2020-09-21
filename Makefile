@@ -180,7 +180,7 @@ else
 endif
 	@echo ""
 
-test-all-snuba:
+test-only-snuba:
 	@echo "--> Running all tests that use snuba"
 ifndef TEST_GROUP
 	RUN_SNUBA_TESTS_ONLY=1 py.test tests/integration tests/sentry tests/acceptance
