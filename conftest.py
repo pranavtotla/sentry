@@ -5,7 +5,6 @@ import sys
 from hashlib import md5
 
 import six
-import pytest
 
 pytest_plugins = ["sentry.utils.pytest"]
 
@@ -92,9 +91,6 @@ def pytest_collection_modifyitems(config, items):
 
         # Split tests in different groups
         group_num = item_to_group % total_groups
-        marker = "group_%s" % group_num
-        config.addinivalue_line("markers", marker)
-        item.add_marker(getattr(pytest.mark, marker))
 
         if group_num == current_group:
             keep.append(item)
