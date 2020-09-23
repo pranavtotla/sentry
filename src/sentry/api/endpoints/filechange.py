@@ -41,7 +41,7 @@ class CommitFileChangeEndpoint(OrganizationReleasesBaseEndpoint):
             commit_id__in=ReleaseCommit.objects.filter(release=release).values_list(
                 "commit_id", flat=True
             )
-        )
+        ).values("filename").distinct()
 
         repo_name = request.query_params.get("repo_name")
 
