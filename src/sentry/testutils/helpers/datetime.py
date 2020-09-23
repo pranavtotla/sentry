@@ -17,7 +17,7 @@ def before_now(**kwargs):
 
 
 def timestamp_format(datetime):
-    return time.mktime(datetime.utctimetuple()) + datetime.microsecond / 1e6
+    return time.mktime(datetime.utctimetuple()) + datetime.microsecond // 1e6
 
 
 class MockClock(object):
